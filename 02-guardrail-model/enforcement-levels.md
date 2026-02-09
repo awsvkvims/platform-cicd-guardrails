@@ -115,6 +115,42 @@ Typical progression:
 This reduces resistance and increases adoption.
 
 ---
+
+## Release Controls as Guardrails (Feature Flags & Release on Demand)
+
+Feature flags and progressive delivery mechanisms are **guardrails**, not optional delivery conveniences.
+
+They enable teams to:
+- Decouple deployment from release
+- Reduce blast radius of change
+- Recover quickly from unexpected behavior
+- Satisfy risk and compliance requirements without slowing delivery
+
+From a guardrail perspective, **deploying code is not the same as exposing behavior**.
+
+### Progressive Enforcement Model
+
+| Maturity Level | Expectation |
+|---------------|------------|
+| Early | Feature flags optional, encouraged for risky changes |
+| Intermediate | Feature flags required for user-impacting changes |
+| Advanced | Feature flags enforced by policy for high-risk paths |
+
+### Enforcement Characteristics
+
+- Guardrails do **not** mandate specific tooling
+- They enforce **capabilities**:
+  - Ability to disable behavior without redeploy
+  - Ability to limit exposure by cohort
+  - Ability to roll forward safely
+
+Feature flags shift control from:
+> *“Can we deploy?”*  
+to  
+> *“Who sees this change, when, and under what conditions?”*
+
+This is foundational to Release on Demand.
+
 ---
 
 ## Example Enforcement Progressions
