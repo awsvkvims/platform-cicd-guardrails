@@ -39,6 +39,22 @@ They exist to:
 - Enable trust at scale
 
 ---
+
+## How This Relates to Engineering Productivity Metrics
+
+This repository focuses on **guardrails (constraints)** — the automated rules and controls that prevent known failure modes in delivery.
+
+If you’re also thinking about **metrics (signals)**:
+- Metrics help you detect where flow, quality, security, or enablement is breaking down
+- Guardrails help you prevent repeatable classes of failure by making the safe path the default.  
+
+Related Offering → [`Engineering Productivity Metrics`](https://github.com/awsvkvims/engineering-productivity-metrics)
+
+In short:
+- **Metrics = where to invest**
+- **Guardrails = how to enforce safety without approvals**
+
+---
 ## Examples of CI/CD Guardrails (Concrete)
 
 Examples of guardrails implemented using this model include:
@@ -106,7 +122,7 @@ Start here:
 - **Reference Architecture** → where guardrails live in CI/CD  
   [`03-reference-architecture`](03-reference-architecture/)
 
-- **Implementation Patterns** → how guardrails are implemented  
+- **Implementation Patterns** → how guardrails are implemented  (Start with reusable workflows, then injection points)
   [`04-implementation-patterns`](04-implementation-patterns/)
 
 - **Rollout Playbooks** → how guardrails are introduced safely  
@@ -114,6 +130,22 @@ Start here:
 
 - **Leadership Conversations** → how this is explained and defended  
   [`07-leadership-conversations`](07-leadership-conversations/)
+
+---
+## The Mental Model
+
+This repository is built around a simple idea:
+
+> **CI/CD guardrails work when governance is embedded into delivery systems,
+not layered on top as approvals.**
+
+In practice this means:
+- Policies are encoded once, reused everywhere
+- Enforcement increases with maturity and environment criticality
+- Teams experience fast feedback, not manual gates
+- Leaders invest in platforms, not process checkpoints
+
+Everything in this repository maps back to this model.
 
 ---
 
@@ -134,6 +166,9 @@ Start with the section that matches the decision you’re trying to make:
 
 - *“How do we roll this out without breaking trust?”*  
   → Introducing Guardrails Safely
+
+- *“What does this look like end-to-end?”*  
+  → [End-to-End Example](06-rollout-playbooks/end-to-end-example.md)  
 
 Guardrails are not static rules.
 They **evolve** from visibility → warnings → enforcement as platforms mature
