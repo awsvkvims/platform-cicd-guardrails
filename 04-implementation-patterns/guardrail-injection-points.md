@@ -1,243 +1,94 @@
-# Guardrail Injection Points
+# Guardrail Injection Points (Overview)
 
-## Purpose
+This document provides a **conceptual overview** of *where* guardrails can be applied
+across the software delivery lifecycle.
 
-Guardrails are most effective when they are applied at the **right points in the delivery lifecycle**.
-
-This document defines the major **injection points** where guardrails should attach, what each point protects, and what good enforcement looks like at each point.
-
-The goal is to:
-- Provide **fast feedback** early
-- Apply **stricter enforcement** only where risk demands it
-- Avoid central bottlenecks and late-stage surprises
+It intentionally avoids implementation detail and instead points to the
+canonical lifecycle model.
 
 ---
 
-## The Delivery Lifecycle (Where Guardrails Attach)
+## What Are Injection Points?
 
-A typical software delivery lifecycle looks like:
+**Injection points** are moments in the delivery lifecycle where guardrails can:
 
-1. Developer workflow (local)
-2. Pull request / merge process
-3. Continuous integration (build/test/analyze)
-4. Artifact publication (registry / repo)
-5. Deployment (environment promotion)
-6. Runtime operation (post-deploy)
-7. Feedback loops (metrics, incidents, learning)
+- Evaluate risk
+- Enforce policy
+- Provide feedback
+- Prevent unsafe promotion
 
-Guardrails can attach at each stage — but they should not all **enforce** at each stage.
+They exist to **shape system behavior**, not to block teams unnecessarily.
 
----
-
-## Injection Point 1: Developer Workflow (Local)
-
-**What it protects**
-- Developer feedback speed
-- Prevents obvious mistakes early
-
-**Typical guardrails**
-- Formatting and linting
-- Pre-commit hooks
-- Dependency checks (lightweight)
-
-**Recommended enforcement**
-- Local-only (non-blocking)
-- Advisory by default
-
-**One-line reason**
-Local guardrails improve flow, but must not become fragile or mandatory bottlenecks.
+Guardrails should:
+- Activate early where possible
+- Tighten progressively
+- Prefer automation over approval
 
 ---
 
-## Injection Point 2: Pull Request & Merge
+## Canonical Lifecycle View
 
-**What it protects**
-- Shared codebase integrity
-- Team coordination safety
+The full lifecycle model — including *what happens at each stage* and *why guardrails belong there* — is defined in:
 
-**Typical guardrails**
-- Branch protections (no direct pushes to main)
-- Required reviews (risk-based)
-- Required status checks (CI must pass)
-- CODEOWNERS for sensitive areas
+➡️ **[Delivery Lifecycle Injection Points](delivery-lifecycle-injection-points.md)**
 
-**Recommended enforcement**
-- Gate/Block for mainline branches
-- Warn/Observe on feature branches
-
-**One-line reason**
-Merge is the first irreversible “shared state” change — it’s the right place for governance that doesn’t slow inner-loop work.
+That document is the **single source of truth**.
 
 ---
 
-## Injection Point 3: CI Pipeline (Build/Test/Scan)
+## Common Injection Categories (High Level)
 
-**What it protects**
-- Build integrity
-- Test quality
-- Early detection of security and policy violations
+Guardrails typically appear in these phases:
 
-**Typical guardrails**
-- Unit/integration test execution
-- SAST, dependency scanning
-- IaC checks (lint/validate)
-- Policy evaluation (lightweight)
+1. **Code Creation**
+   - Static analysis
+   - Branch protection
+   - Commit hygiene
 
-**Recommended enforcement**
-- Warn in dev
-- Gate/Block in staging/prod depending on risk
+2. **Build & Validation**
+   - Test coverage expectations
+   - Dependency checks
+   - Artifact integrity
 
-**One-line reason**
-CI is where automated controls can provide fast, consistent feedback without requiring human intervention.
+3. **Artifact Promotion**
+   - Provenance verification
+   - Policy gates (automated)
 
----
+4. **Deployment**
+   - Environment-specific enforcement
+   - Progressive rollout readiness
 
-## Injection Point 4: Artifact Publication (Registry/Repo)
+5. **Runtime & Operations**
+   - Feature flag constraints
+   - Kill-switch guarantees
+   - SLO-driven rollback
 
-**What it protects**
-- Supply chain integrity
-- Artifact immutability and traceability
-
-**Typical guardrails**
-- Artifact signing / provenance
-- Immutable tags or digest pinning
-- SBOM generation and publishing
-- Registry write restrictions
-
-**Recommended enforcement**
-- Block publication if provenance is missing (mature state)
-- Start with observe/warn to baseline
-
-**One-line reason**
-If the artifact is unsafe or untraceable, everything downstream becomes higher risk and harder to audit.
+6. **Signals & Feedback**
+   - Drift detection
+   - Guardrail effectiveness metrics
 
 ---
 
-## Injection Point 5: Deployment & Environment Promotion
+## Why This Document Exists
 
-**What it protects**
-- Production stability
-- Blast radius control
-- Risk-based release governance
+This file exists to:
+- Provide a fast mental model
+- Orient readers new to guardrails
+- Point to deeper architectural guidance
 
-**Typical guardrails**
-- Environment approvals (rare, risk-based)
-- Change windows (only when truly required)
-- Progressive delivery controls (canary/blue-green)
-- Policy gates (e.g., “no critical vulns in prod”)
+It is **not** intended for design decisions or implementation planning.
 
-**Recommended enforcement**
-- Dev: observe/warn
-- Staging: warn/gate
-- Prod: gate/block for high-risk controls
+For detail, always refer to:
 
-**One-line reason**
-This is where guardrails should be strictest — because the blast radius is real.
+➡️ **[Delivery Lifecycle Injection Points](delivery-lifecycle-injection-points.md)**
 
 ---
 
-## Injection Point 6: Runtime (Post-Deploy)
+## Design Reminder
 
-**What it protects**
-- User experience
-- Reliability and security posture over time
-
-**Typical guardrails**
-- Health checks, SLOs, error budgets
-- Runtime security monitoring
-- Drift detection (IaC vs actual)
-- Alerting and automated rollback triggers
-
-**Recommended enforcement**
-- Not “block” (too late) — instead:
-  - Alert, rollback, degrade gracefully, open incidents
-
-**One-line reason**
-Runtime guardrails are about detection and response, not prevention.
-
----
-
-## Injection Point 7: Signal & Feedback Loops
-
-**What it protects**
-- Learning, improvement, and trust
-- Preventing “silent failure” of guardrail programs
-
-**Typical guardrails**
-- Trend reporting (warnings, exceptions, bypass frequency)
-- Platform friction signals (time-to-fix, false positives)
-- Adoption signals (who is using paved roads)
-
-**Recommended enforcement**
-- No enforcement — these are signals for decision-making
-
-**One-line reason**
-Guardrails only improve systems if their outcomes feed back into platform investment and policy evolution.
-
----
-
-## How Reusable Workflows Fit In
-
-Reusable workflows are typically used at:
-
-- PR checks (branch protections + checks)
-- CI checks (build/test/scan)
-- Artifact publication (signing/SBOM)
-- Deployment (policy gates and release controls)
-
-They enable guardrails to be:
-- Standardized
-- Versioned
-- Updated safely
-- Adopted without copy/paste
-
-See: [Reusable Workflows](reusable-workflows.md)
-
----
-
-## Common Failure Modes (Anti-Patterns)
-
-1. **Blocking too early**
-   - Teams fight the guardrail program
-   - Adoption collapses
-
-2. **No signals / no feedback**
-   - Controls become stale
-   - False positives accumulate
-   - Teams bypass silently
-
-3. **Central pipelines**
-   - Platform becomes a bottleneck
-   - Teams lose autonomy
-
-4. **Approvals as default**
-   - Flow slows
-   - Rubber-stamping replaces safety
-
----
-
-## Practical Starting Point (Recommended)
-
-Start with these three injections first:
-
-1. PR checks (branch protection + required CI)
-2. CI checks (tests + scanning as warnings)
-3. Environment promotion (risk-based gates only in prod)
-
-Then add:
-- supply chain controls
-- runtime controls
-- feedback dashboards
-
----
-
-## Next
-
-Now that we know **where guardrails attach**, we can define:
-
-- how signals are emitted consistently
-- how enforcement is configured by environment
-- how teams consume guardrails as capabilities
-
-→ Next: **Signals, Exceptions, and Feedback**
+> Guardrails are most effective when they are:
+> - Predictable
+> - Progressive
+> - Visible
+> - Difficult to bypass, but easy to comply with
 

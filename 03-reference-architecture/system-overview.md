@@ -127,6 +127,41 @@ Used by:
 5. Signals inform future decisions and investments
 
 ---
+## Runtime Release Control Layer
+
+The Runtime Release Control Layer governs **when and how deployed code is exposed to users**.
+
+This layer is typically implemented via feature flag or progressive delivery systems, but the architecture is tool-agnostic.
+
+### Responsibilities
+
+- Control exposure independently of deployment
+- Enforce rollout strategies (canary, percentage, cohort-based)
+- Support instant disablement (kill switches)
+- Integrate with health and SLO signals
+
+### Inputs
+
+- Deployment metadata (service, version, risk classification)
+- Policy constraints (environment, compliance requirements)
+- Runtime signals (errors, latency, saturation)
+
+### Outputs
+
+- Gradual or halted rollout decisions
+- Automated rollback or disablement
+- Signals into dashboards and incident systems
+
+### Architectural Principle
+
+Release control is a **runtime governance concern**, not a CI/CD concern.
+
+Treating feature flags as first-class architecture components enables:
+- Faster recovery
+- Safer experimentation
+- Reduced reliance on approvals
+
+---
 
 ## Key Architectural Principles
 
