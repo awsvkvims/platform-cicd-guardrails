@@ -39,6 +39,22 @@ They exist to:
 - Enable trust at scale
 
 ---
+## Examples of CI/CD Guardrails (Concrete)
+
+Examples of guardrails implemented using this model include:
+
+- Preventing deployment of artifacts without provenance or signatures
+- Warning (not blocking) on missing security scans in early environments
+- Enforcing branch protection progressively from dev → prod
+- Requiring feature flags for risky changes before production
+- Blocking infrastructure changes that bypass approved IaC workflows
+
+These guardrails:
+- Are enforced automatically
+- Do not require manual approvals
+- Evolve as teams and platforms mature
+
+---
 
 ## Who This Is For (and What They Use It For)
 
@@ -119,6 +135,10 @@ Start with the section that matches the decision you’re trying to make:
 - *“How do we roll this out without breaking trust?”*  
   → Introducing Guardrails Safely
 
+Guardrails are not static rules.
+They **evolve** from visibility → warnings → enforcement as platforms mature
+and trust is earned through system reliability.
+
 ---
 
 ## Guiding Principle
@@ -132,8 +152,25 @@ Well-designed guardrails:
 
 ---
 
+## Expected Outcomes
+
+Organizations adopting this model typically see:
+- Fewer manual approvals without increased risk
+- More consistent CI/CD behavior across teams
+- Earlier detection of security and compliance issues
+- Higher trust between teams and governance functions
+- Reduced platform toil from bespoke pipelines
+
+---
+
 ## Status
 
-Reference model established.  
-Sample implementations and diagrams will continue to evolve.
+This repository establishes the reference model and design intent.
+
+Upcoming additions focus on:
+- Concrete guardrail examples
+- Sample workflows and policies
+- Architecture diagrams illustrating enforcement points
+
+The model itself is stable; implementations will evolve.
 
