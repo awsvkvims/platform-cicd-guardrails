@@ -1,4 +1,5 @@
 ![Release](https://img.shields.io/github/v/release/awsvkvims/platform-cicd-guardrails)
+![Status](https://img.shields.io/badge/status-reference_model-blue)
 # Platform CI/CD Guardrails
 
 This repository captures a **platform-first approach to governing CI/CD systems**
